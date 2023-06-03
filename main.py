@@ -34,6 +34,21 @@ class Student:
         average_rating = round(sum_rating / len_rating, 2)
         return average_rating
 
+    def av_rating_for_course(self, course):
+        sum_rating = 0
+        len_rating = 0
+        for lesson in self.grades.keys():
+            if lesson == course:
+                sum_rating += sum(self.grades[course])
+                len_rating += len(self.grades[course])
+        average_rating = round(sum_rating / len_rating, 2)
+        return average_rating
+
+    def __lt__(self, other):
+        if not isinstance(other, Student):
+            print('Не сравнимо')
+            return
+        return self.av_rating() < other.av_rating()
 
 class Mentor:
     def __init__(self, name, surname):
@@ -62,6 +77,22 @@ class Lecturer(Mentor):
             len_rating += len(course)
         average_rating = round(sum_rating / len_rating, 2)
         return average_rating
+
+    def av_rating_for_course(self, course):
+        sum_rating = 0
+        len_rating = 0
+        for lesson in self.grades.keys():
+            if lesson == course:
+                sum_rating += sum(self.grades[course])
+                len_rating += len(self.grades[course])
+        average_rating = round(sum_rating / len_rating, 2)
+        return average_rating
+
+    def __lt__(self, other):
+        if not isinstance(other, Lecturer):
+            print('Не сравнимо')
+            return
+        return self.av_rating() < other.av_rating()
 
 
 class Reviewer(Mentor):
@@ -94,11 +125,15 @@ student2 = Student('Meg', 'Griffin', 'F')
 student2.courses_in_progress += ['Python']
 student2.finished_courses += ['Java']
 
+stud_lst = [student, student2]
+
 lecturer = Lecturer('Peter', 'Griffin')
 lecturer.courses_attached += ['Python']
 
 lecturer2 = Lecturer('Stewie', 'Griffin')
 lecturer2.courses_attached += ['Python']
+
+lect_lst = [lecturer, lecturer2]
 
 reviewer = Reviewer('Brian', 'Griffin')
 reviewer.courses_attached += ['Python']
@@ -118,7 +153,24 @@ student.rate_lecturer(lecturer, 'Python', 8)
 student2.rate_lecturer(lecturer2, 'Python', 8)
 student2.rate_lecturer(lecturer2, 'Python', 6)
 
+def average_rating_for_course(course, list_):
+    sum_rat = 0
+    quant_rat = 0
+    for stud in list_:
+        for course in stud.grades:
+            stud_sum_rating = stud.av_rating_for_course(course)
+            sum_rat += stud_sum_rating
+            quant_rat += 1
+    average_rating = round(sum_rat / quant_rat, 2)
+    return average_rating
 
+
+print('=' * 30)
+print(f"Средняя оценка по курсу {''.join(student.courses_in_progress)} у студентов"
+      f" {average_rating_for_course('Python', stud_lst)}")
+print(f"Средняя оценка по курсу {''.join(lecturer.courses_attached)} у лекторов"
+      f" {average_rating_for_course('Python', stud_lst)}")
+print('=' * 30)
 print(reviewer.__str__())
 print('-' * 30)
 print(reviewer2.__str__())

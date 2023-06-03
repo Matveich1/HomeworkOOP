@@ -169,7 +169,7 @@ print('=' * 30)
 print(f"Средняя оценка по курсу {''.join(student.courses_in_progress)} у студентов"
       f" {average_rating_for_course('Python', stud_lst)}")
 print(f"Средняя оценка по курсу {''.join(lecturer.courses_attached)} у лекторов"
-      f" {average_rating_for_course('Python', stud_lst)}")
+      f" {average_rating_for_course('Python', lect_lst)}")
 print('=' * 30)
 print(reviewer.__str__())
 print('-' * 30)
